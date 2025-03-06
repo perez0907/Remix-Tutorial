@@ -12,6 +12,7 @@ import {
   ScrollRestoration,
   useNavigation,
   useLoaderData,
+  useSubmit,
 } from "@remix-run/react";
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import appStylesHref from "./app.css?url";
@@ -39,6 +40,7 @@ export const loader = async ({
 export default function App() {
   const { contacts, q } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
+  const submit = useSubmit();
 
   useEffect(() => {
     const searchField = document.getElementById("q");
@@ -62,7 +64,9 @@ export default function App() {
             navigation.state === "loading" ? "loading" : ""
           }
           <div>
-            <Form id="search-form" role="search">
+            <Form id="search-form" onChange={(event) =>
+              submit(event.currentTarget)
+            } role="search">
               <input
                 id="q"
                 aria-label="Search contacts"
